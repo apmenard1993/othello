@@ -1,6 +1,7 @@
 import copy
 import random
 import math
+import sys
 CORNERWEIGHT = 1000
 TILEWEIGHT = 10
 MOVEWEIGHT = 100
