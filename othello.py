@@ -2,9 +2,14 @@ import copy
 import random
 import math
 import sys
+
+
 CORNERWEIGHT = 1000
 TILEWEIGHT = 10
 MOVEWEIGHT = 100
+TESTBOARD = False
+
+
 class Board(object):
     def __init__(self, boardArray=None):
         self.boardArray = boardArray if boardArray is not None else self.getNewBoard()
@@ -17,6 +22,40 @@ class Board(object):
         boardArray = self.resetBoard(boardArray)
         return boardArray
     
+    def testBoard(self):
+        board = []
+
+        eighth =  ['X', 'X', 'X', 'X', 'X', 'X', 'O', 'X']
+        seventh = ['X', 'X', 'X', 'X', 'X', 'O', 'O', 'X']
+        sixth =   ['X', 'O', 'X', 'X', 'O', 'X', 'O', ' ']
+        fifth =   ['X', 'O', 'O', 'X', 'X', 'X', 'O', ' ']
+        fourth =  ['X', 'O', 'O', 'O', 'X', 'X', 'O', ' ']
+        third =   ['X', 'X', 'O', 'X', 'O', 'O', 'X', 'X']
+        second =  ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X']
+        first =   ['X', 'X', 'X', 'X', 'X', 'X', ' ', 'X']
+
+        firstColumn = ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X']
+        secondColumn = ['X', 'X', 'X', 'O', 'O', 'O', 'X', 'X']
+        thirdColumn = ['X', 'X', 'O', 'O', 'O', 'X', 'X', 'X']
+        fourthColumn = ['X', 'X', 'X', 'O', 'X', 'X', 'X', 'X']
+        fifthColumn = ['X', 'X', 'O', 'X', 'X', 'O', 'X', 'X']
+        sixthColumn = ['X', 'X', 'O', 'X', 'X', 'X', 'O', 'X']
+        seventhColumn = [' ', 'X', 'X', 'O', 'O', 'O', 'O', 'O']
+        eighthColumn = ['X', 'X', 'X', ' ', ' ', ' ', 'X', 'X']
+
+        board.append(firstColumn)
+        board.append(secondColumn)
+        board.append(thirdColumn)
+        board.append(fourthColumn)
+        board.append(fifthColumn)
+        board.append(sixthColumn)
+        board.append(seventhColumn)
+        board.append(eighthColumn)
+        #board.reverse()
+       # for row in board:
+        #    row.reverse()
+        return Board(board)
+        
     def resetBoard(self, oldboard):
         for x in range(8):
             for y in range(8):
@@ -254,6 +293,8 @@ class AI(object):
         player = tile
         opponent = getOtherPlayer(player)
         possibleMoves = board.getValidMoves(player)
+        if possibleMoves != []:
+            bestMove = possibleMoves[0]
         alpha = float('infinity')
         
         for x, y in possibleMoves:
@@ -372,6 +413,10 @@ while True:
         playerTwo = Human("O")
     
     turn = "playerOne"
+    
+    if TESTBOARD:
+        gameBoard = gameBoard.testBoard()
+        turn = "playerTwo"
     
     while True:
         if turn == 'playerOne':
