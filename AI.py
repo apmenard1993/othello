@@ -18,7 +18,6 @@ class AI:
         max_eval = float('-infinity')
 
         player = tile
-        opponent = get_other_player(player)
         possible_moves = board.get_valid_moves(player)
         if possible_moves:
             best_move = possible_moves[0]

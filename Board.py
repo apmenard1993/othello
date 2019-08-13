@@ -8,16 +8,7 @@ MOVE_WEIGHT = 100
 class Board:
     def __init__(self, board_array=None):
         self.boardArray = board_array if board_array is not None else self.get_new_board()
-# [
-#     [x o x o x x x x]
-#     [x o x o x x x x]
-#     [x o x o x x x x]
-#     [x o x o x x x x]
-#     [x o x o x x x x]
-#     [x o x o x x x x]
-#     [x o x o x x x x]
-#     [x o x o x x x x]
-# ]
+
     def get_new_board(self):
         board_array = []
         for i in range(8):
@@ -72,15 +63,14 @@ class Board:
         return old_board
 
     def get_score(self):
-        x_score = 0
-        o_score = 0
+        score = 0
         for row in self.boardArray:
             for item in row:
                 if item == 'X':
-                    x_score += 1
+                    score += 1
                 elif item == 'O':
-                    o_score += 1
-        return x_score - o_score
+                    score -= 1
+        return score
 
     def get_board_with_hints(self, tile):
         board_copy = self.copy_board()
@@ -140,8 +130,6 @@ class Board:
                         if x == x_start and y == y_start:
                             break
                         tiles_to_flip.append([x, y])
-        if len(tiles_to_flip) is 0:
-            return False
         return tiles_to_flip
 
     def on_board(self, x, y):
