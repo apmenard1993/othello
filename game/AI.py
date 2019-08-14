@@ -1,5 +1,9 @@
 from Display import get_other_player
 
+CORNER_WEIGHT = 1000
+TILE_WEIGHT = 10
+MOVE_WEIGHT = 100
+
 
 class AI:
     def __init__(self, tile, quick, num_moves=4):
@@ -49,3 +53,42 @@ class AI:
                 alpha = current_alpha
 
         return alpha
+
+    def evaluate_state(self, board):
+        if self.tile == 'X':
+            other_tile = 'O'
+        else:
+            other_tile = 'X'
+
+        # check corners, total number of tiles, number of available moves
+        value = 0
+
+        # check corners
+        my_corners = 0
+        opp_corners = 0
+        for x, y in [[0, 0], [0, 7], [7, 0], [7, 7]]:
+            if board.boardArray[x][y] == self.tile:
+                my_corners += 1
+            elif board.boardArray[x][y] == other_tile:
+                opp_corners += 1
+
+        corners = (CORNER_WEIGHT * (my_corners - opp_corners))
+
+        # check total number of tiles
+        my_total = 0
+        opp_total = 0
+        for row in board.boardArray:
+            for space in row:
+                if space == self.tile:
+                    my_total += 1
+                elif space == other_tile:
+                    opp_total += 1
+        tiles = (TILE_WEIGHT * (my_total - opp_total))
+
+        # check number of available next moves
+        my_moves = len(board.get_valid_moves(self.tile))
+        opp_moves = len(board.get_valid_moves(other_tile))
+
+        moves = (MOVE_WEIGHT * (my_moves - opp_moves))
+        value = corners + tiles + moves
+        return value

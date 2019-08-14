@@ -7,8 +7,6 @@ import Display
 from Human import Human
 from Random import Random
 
-TEST_BOARD = False
-
 ######################################################################################################################
 # Program Loop
 while True:
@@ -16,7 +14,7 @@ while True:
     aiPlayerOne = False
     aiPlayerTwo = False
 
-    Display.display_intro()
+    Display.cli_display_intro()
 
     playerOneHuman, playerTwoHuman = Display.get_human_players()
     if not playerOneHuman:
@@ -41,10 +39,6 @@ while True:
         playerTwo = Human("O")
 
     turn = "playerOne"
-
-    if TEST_BOARD:
-        gameBoard = gameBoard.test_board()
-        turn = "playerTwo"
 
     # Game Loop
     while True:

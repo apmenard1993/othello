@@ -1,15 +1,22 @@
-def get_other_player(player):
-    if player == 'X':
-        return 'O'
-    else:
-        return 'X'
+def get_intro():
+    output = "Welcome to othello!</br>This program is a text based implementation of the game Othello or Reversi.</br>" \
+             "First player uses the X tile, second uses the O tile.</br>" \
+             "The AI player uses an alpha-beta pruning minimax algorithm with a maximum depth of 3 moves.</br>"
+    return output
+
+
+def cli_display_intro():
+    output = "Welcome to othello!\nThis program is a text based implementation of the game Othello or Reversi.\n" \
+             "First player uses the X tile, second uses the O tile.\n" \
+             "The AI player uses an alpha-beta pruning minimax algorithm with a maximum depth of 3 moves.\n"
+    print output
 
 
 def get_human_players():
     print "\nEnter Number of Human Players (0, 1, or 2)"
     num_players = raw_input()
-    if num_players is not '0':
-        if num_players is '1':
+    if num_players != '0':
+        if num_players == '1':
             print "\nWhich Player Is Human, X or [O]?"
             player_one_human = 'x' == raw_input().lower()
             if not player_one_human:
@@ -40,18 +47,18 @@ def get_random_or_ai(player):
     return True
 
 
-def display_intro():
-    output = "Welcome to othello!\nThis program is a text based implementation of the game Othello or Reversi.\n" \
-             "First player uses the X tile, second uses the O tile.\n" \
-             "The AI player uses an alpha-beta pruning minimax algorithm with a maximum depth of 3 moves.\n"
-    print output
-
-
-def play_again():
-    print "Do you want to play again? ([yes] or no)"
-    return not raw_input().lower().startswith('n')
+def get_other_player(player):
+    if player == 'X':
+        return 'O'
+    else:
+        return 'X'
 
 
 def get_quick(tile):
     print "Would you like to analyze each move for " + tile + " or have it play as fast as possible ([quick] or wait?"
     return not raw_input().lower().startswith('w')
+
+
+def play_again():
+    print "Do you want to play again? ([yes] or no)"
+    return not raw_input().lower().startswith('n')
