@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% extends "bootstrap/base.html" %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Othello</title>
+</head>
+{% block content %}
+    {{ super() }}
+    <body>
+    <table height="800" width="800">
+        <tbody>
+        {% for i in range(0,8) %}
+            <tr>
+                {% for j in range(0,8) %}
+                    <td class="board-space">
+                        <button id="" type="button" onclick="on_click({{ i }}, {{ j }})" class="board-tile">
+                            {{ gameArray[i][j] }}
+                        </button>
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+    </body>
+    </html>
+{% endblock %}
+{% block scripts %}
+    {{ super() }}
+    <script>
+        function on_click(i, j) {
+            $.post(
+                '/submitMove',
+                {i, j}
+            ).done(() => {
+                window.location.reload()
+            }).fail(() => {
+                //pass
+            });
+        }
+    </script>
+{% endblock %}
+{% block styles %}
+    {{ super() }}
+    <style lang="scss">
+        .board-space {
+            text-align: center;
+        }
+
+        .board-tile {
+            border: 1px solid black;
+            height: 100px;
+            width: 100px;
+            vertical-align: middle;
+            line-height: 100px;
+
+        }
+    </style>
+{% endblock %}
