@@ -9,10 +9,12 @@ Bootstrap(app)
 board = Board()
 board.reset_board(board.boardArray)
 
-#todo: make submit_move
+
+# todo: make submit_move
 def update():
+    global board
     moves = board.get_valid_moves('X')
-    board.boardArray = board.make_move('X', moves[0][0], moves[0][1]).boardArray
+    board = board.make_move('X', moves[0][0], moves[0][1])
 
 
 @app.route('/')
