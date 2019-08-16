@@ -1,20 +1,20 @@
-from Display import get_other_player
+from game.Computer import Computer
+from game.Display import get_other_player
 
 CORNER_WEIGHT = 1000
 TILE_WEIGHT = 10
 MOVE_WEIGHT = 100
 
 
-class AI:
-    def __init__(self, tile, quick, num_moves=4):
-        self.tile = tile
-        self.depth = num_moves
-        self.quick = quick
+class AI(Computer):
+    def __init__(self, tile, quick=True, depth=4):
+        Computer.__init__(self, tile, quick)
+        self.depth = depth
 
     def get_move(self, board):
         if not self.quick:
-            print "Press enter to see the computer's move"
-            raw_input()
+            print("Press enter to see the computer's move")
+            input()
         return self.get_best_move(board, self.tile, self.depth)
 
     def get_best_move(self, board, tile, depth):
@@ -55,10 +55,7 @@ class AI:
         return alpha
 
     def evaluate_state(self, board):
-        if self.tile == 'X':
-            other_tile = 'O'
-        else:
-            other_tile = 'X'
+        other_tile = get_other_player(self.tile)
 
         # check corners, total number of tiles, number of available moves
         value = 0

@@ -1,62 +1,34 @@
 import copy
 
 
+def reset_board(old_board):
+    for x in range(8):
+        for y in range(8):
+            old_board[x][y] = ' '
+
+    old_board[3][3] = 'O'
+    old_board[3][4] = 'X'
+    old_board[4][3] = 'X'
+    old_board[4][4] = 'O'
+    return old_board
+
+
+def get_new_board():
+    board_array = []
+    for i in range(8):
+        board_array.append([' '] * 8)
+
+    board_array = reset_board(board_array)
+    return board_array
+
+
+def on_board(x, y):
+    return 0 <= x <= 7 and 0 <= y <= 7
+
+
 class Board:
     def __init__(self, board_array=None):
-        self.boardArray = board_array if board_array is not None else self.get_new_board()
-
-    def get_new_board(self):
-        board_array = []
-        for i in range(8):
-            board_array.append([' '] * 8)
-
-        board_array = self.reset_board(board_array)
-        return board_array
-
-    def test_board(self):
-        board = []
-
-        eighth = ['X', 'X', 'X', 'X', 'X', 'X', 'O', 'X']
-        seventh = ['X', 'X', 'X', 'X', 'X', 'O', 'O', 'X']
-        sixth = ['X', 'O', 'X', 'X', 'O', 'X', 'O', ' ']
-        fifth = ['X', 'O', 'O', 'X', 'X', 'X', 'O', ' ']
-        fourth = ['X', 'O', 'O', 'O', 'X', 'X', 'O', ' ']
-        third = ['X', 'X', 'O', 'X', 'O', 'O', 'X', 'X']
-        second = ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X']
-        first = ['X', 'X', 'X', 'X', 'X', 'X', ' ', 'X']
-
-        first_column = ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X']
-        second_column = ['X', 'X', 'X', 'O', 'O', 'O', 'X', 'X']
-        third_column = ['X', 'X', 'O', 'O', 'O', 'X', 'X', 'X']
-        fourth_column = ['X', 'X', 'X', 'O', 'X', 'X', 'X', 'X']
-        fifth_column = ['X', 'X', 'O', 'X', 'X', 'O', 'X', 'X']
-        sixth_column = ['X', 'X', 'O', 'X', 'X', 'X', 'O', 'X']
-        seventh_column = [' ', 'X', 'X', 'O', 'O', 'O', 'O', 'O']
-        eighth_column = ['X', 'X', 'X', ' ', ' ', ' ', 'X', 'X']
-
-        board.append(first_column)
-        board.append(second_column)
-        board.append(third_column)
-        board.append(fourth_column)
-        board.append(fifth_column)
-        board.append(sixth_column)
-        board.append(seventh_column)
-        board.append(eighth_column)
-        # board.reverse()
-        # for row in board:
-        #    row.reverse()
-        return Board(board)
-
-    def reset_board(self, old_board):
-        for x in range(8):
-            for y in range(8):
-                old_board[x][y] = ' '
-
-        old_board[3][3] = 'O'
-        old_board[3][4] = 'X'
-        old_board[4][3] = 'X'
-        old_board[4][4] = 'O'
-        return old_board
+        self.boardArray = board_array if board_array is not None else get_new_board()
 
     def get_score(self):
         score = 0
@@ -79,7 +51,7 @@ class Board:
         h_line = '  +---+---+---+---+---+---+---+---+'
         print(h_line)
         for y in range(8):
-            print "%d" % (y + 1),
+            print("%d" % (y + 1), end=' ')
             for x in range(8):
                 print('| %s' % self.boardArray[x][y]),
             print('|')
@@ -93,7 +65,7 @@ class Board:
         """Checks from a starting position every possible space near it with an enemy tile
            and returns a list of tiles to be flipped along all lines of enemy tiles, if any."""
         board = self.copy_board()
-        if self.boardArray[x_start][y_start] != " " or not self.on_board(x_start, y_start):
+        if self.boardArray[x_start][y_start] != " " or not on_board(x_start, y_start):
             return False
         board[x_start][y_start] = tile
 
@@ -107,17 +79,17 @@ class Board:
             x, y = x_start, y_start
             x += x_dir
             y += y_dir
-            if self.on_board(x, y) and board[x][y] == other_tile:
+            if on_board(x, y) and board[x][y] == other_tile:
                 x += x_dir
                 y += y_dir
-                if not self.on_board(x, y):
+                if not on_board(x, y):
                     continue
                 while board[x][y] == other_tile:
                     x += x_dir
                     y += y_dir
-                    if not self.on_board(x, y):
+                    if not on_board(x, y):
                         break
-                if not self.on_board(x, y):
+                if not on_board(x, y):
                     continue
                 if board[x][y] == tile:
                     while True:
@@ -127,9 +99,6 @@ class Board:
                             break
                         tiles_to_flip.append([x, y])
         return tiles_to_flip
-
-    def on_board(self, x, y):
-        return 0 <= x <= 7 and 0 <= y <= 7
 
     def get_valid_moves(self, tile):
         valid_moves = []
@@ -157,4 +126,3 @@ class Board:
         for x, y in flip_tiles:
             copy_board.boardArray[x][y] = tile
         return copy_board
-

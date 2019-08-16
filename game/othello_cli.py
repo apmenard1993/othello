@@ -1,11 +1,11 @@
 import math
 import sys
 
-from AI import AI
-from Board import Board
-import Display
-from Human import Human
-from Random import Random
+from game import Display
+from game.AI import AI
+from game.Board import Board
+from game.Human import Human
+from game.Random import Random
 
 ######################################################################################################################
 # Program Loop
@@ -49,10 +49,10 @@ while True:
             move = playerOne.get_move(gameBoard)
             if move is not None:
                 if move == 'quit':
-                    print "Thanks for playing!"
+                    print("Thanks for playing!")
                     sys.exit()
                 else:
-                    print "Playing an " + playerOne.tile + " at (%d, %d)" % (move[0] + 1, move[1] + 1)
+                    print("Playing an " + playerOne.tile + " at (%d, %d)" % (move[0] + 1, move[1] + 1))
                     gameBoard = gameBoard.make_move(playerOne.tile, move[0], move[1])
 
                 if not gameBoard.get_valid_moves(playerTwo.tile):
@@ -69,10 +69,10 @@ while True:
             move = playerTwo.get_move(gameBoard)
             if move is not None:
                 if move == 'quit':
-                    print "Thanks for playing!"
+                    print("Thanks for playing!")
                     sys.exit()
                 else:
-                    print "Playing an " + playerTwo.tile + " at (%d, %d)" % (1 + move[0], 1 + move[1])
+                    print("Playing an " + playerTwo.tile + " at (%d, %d)" % (1 + move[0], 1 + move[1]))
                     gameBoard = gameBoard.make_move(playerTwo.tile, move[0], move[1])
 
                 if not gameBoard.get_valid_moves(playerOne.tile):
@@ -87,13 +87,13 @@ while True:
     score = gameBoard.get_score()
     if score > 0:
         # player 1 wins
-        print "Player 1 wins by %d tiles" % math.fabs(score)
+        print("Player 1 wins by %d tiles" % math.fabs(score))
     elif score < 0:
         # player 2 wins
-        print "Player 2 wins by %d tiles" % math.fabs(score)
+        print("Player 2 wins by %d tiles" % math.fabs(score))
     else:
         # tie game
-        print "Tie game!"
+        print("Tie game!")
 
     if not Display.play_again():
         break
