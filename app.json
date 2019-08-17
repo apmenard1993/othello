@@ -1,8 +1,0 @@
-{
-  "name": "Web Othello",
-  "description": "A web interface for othello.",
-  "image": "heroku/python",
-  "repository": "https://git.heroku.com/othello-web.git",
-  "keywords": ["python", "flask" ],
-  "addons": [ "heroku-postgresql" ]
-}
