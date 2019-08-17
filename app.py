@@ -7,7 +7,7 @@ from game.Board import Board, reset_board
 from game.Human import Human
 from game.Random import Random
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="server/templates")
 Bootstrap(app)
 board = Board()
 reset_board(board.boardArray)
