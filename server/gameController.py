@@ -1,12 +1,16 @@
 from flask import Blueprint, render_template, request
 
-import gameService
-from AI import AI
-from Board import Board, reset_board
-from Human import Human
-from Random import Random
+import server.gameService as gameService
+from game.AI import AI
+from game.Board import Board, reset_board
+from game.Human import Human
+from game.Random import Random
 
+
+# set up blueprint for endpoints
 game_controller = Blueprint('game_controller', __name__, template_folder='templates')
+
+# globals
 board = Board()
 reset_board(board.boardArray)
 players = []
@@ -17,15 +21,13 @@ player_types = {
 }
 
 
+# endpoints
 @game_controller.route('/startGame', methods=['POST'])
 def start_game():
-    global players
     player_one_type = request.form['playerOneType']
     player_two_type = request.form['playerTwoType']
 
-    for i, p_type in enumerate([player_one_type, player_two_type]):
-        players.append(player_types.get(p_type))
-    print(players)
+
     # todo: make this a UUID from/saved-to the database
     # create a new board state for that UUID
     # return the UUID
