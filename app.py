@@ -19,7 +19,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.register_blueprint(game_controller)
 db = SQLAlchemy(app)
 
-from server import models
 
 # default routes
 @app.route('/')
