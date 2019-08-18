@@ -1,10 +1,8 @@
-import os
-
 from flask_migrate import Migrate, MigrateCommand, Manager
 
 import config
-from app import app, db
-
+from app import app
+from database import db
 
 app.config.from_object(config.get_config_environment())
 

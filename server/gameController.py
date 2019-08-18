@@ -6,7 +6,6 @@ from game.Board import Board, reset_board
 from game.Human import Human
 from game.Random import Random
 
-
 # set up blueprint for endpoints
 game_controller = Blueprint('game_controller', __name__, template_folder='templates')
 
@@ -26,20 +25,15 @@ player_types = {
 def start_game():
     player_one_type = request.form['playerOneType']
     player_two_type = request.form['playerTwoType']
-
-
-    # todo: make this a UUID from/saved-to the database
-    # create a new board state for that UUID
-    # return the UUID
-    return "THISISAUUID"
+    game_id = gameService.create_new_game(player_one_type, player_two_type)
+    return str(game_id)
 
 
 @game_controller.route('/playGame')
 def render_game():
     game_id = request.args['id']
-    # todo: fetch game state for this UUID and render that
-    global board
-    return render_template('playGame.html', gameArray=board.boardArray)
+    game_board = gameService.get_game_by_id(game_id)
+    return render_template('playGame.html', gameArray=game_board)
 
 
 @game_controller.route('/submitMove', methods=['POST'])

@@ -1,24 +1,25 @@
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
-from flask_sqlalchemy import SQLAlchemy
 
 import config
+from database import db
 from game import Display
+# create app
 from server.gameController import game_controller
 
-
-# create app
 app = Flask(__name__, template_folder="server/templates")
 Bootstrap(app)
 
 # configure
 app.config.from_object(config.get_config_environment())
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db.init_app(app)
 
 # register blueprints
 app.register_blueprint(game_controller)
-db = SQLAlchemy(app)
 
+# noinspection PyUnresolvedReferences
+from server import models
 
 # default routes
 @app.route('/')
