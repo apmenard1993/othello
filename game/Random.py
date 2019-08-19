@@ -5,6 +5,9 @@ from game.Computer import Computer
 
 class Random(Computer):
 
+    def __repr__(self):
+        return "<Random - tile: {}>".format(self.tile)
+
     def get_move(self, board, tile=None):
         if tile is None:
             tile = self.tile

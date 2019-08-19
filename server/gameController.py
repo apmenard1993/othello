@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request
 
 import server.gameService as gameService
-
 # set up blueprint for endpoints
+from game.Board import Board
 
 game_controller = Blueprint('game_controller', __name__, template_folder='templates')
 
@@ -20,11 +20,13 @@ def start_game():
 def render_game(game_id):
     game = gameService.get_game_by_id(int(game_id))
     current_turn = game.active_player
-    game_board = game.unpickle_board()
+    game_board = Board(game.unpickle_board())
     if not game_board:
         raise FileNotFoundError("Unable to find game with id {}".format(game_id))
+    score = game_board.get_score()
     return render_template('playGame.html',
-                           gameArray=game_board,
+                           gameArray=game_board.board_array,
+                           score=score,
                            activePlayer="{} ({})".format(current_turn + 1, 'X' if current_turn == 0 else 'O'))
 
 

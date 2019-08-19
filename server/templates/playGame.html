@@ -9,22 +9,33 @@
     {{ super() }}
     <body>
     <span>Player {{ activePlayer }}'s turn</span>
-    <table height="800" width="800">
-        <tbody>
-        {% for i in range(0,8) %}
-            <tr>
-                {% for j in range(0,8) %}
-                    <td class="board-space">
-                        <button id="" type="button" onclick="on_click({{ i }}, {{ j }})" class="board-tile">
-                            {{ gameArray[i][j] }}
-                        </button>
-                    </td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-        </tbody>
-
-    </table>
+    <div style="display: flex">
+        <table height="800" width="800">
+            <tbody>
+            {% for i in range(0,8) %}
+                <tr>
+                    {% for j in range(0,8) %}
+                        <td class="board-space">
+                            <button id="cell-{{ i }}-{{ j }}" type="button" onclick="on_click({{ i }}, {{ j }})"
+                                    class="board-tile">
+                                {{ gameArray[i][j] }}
+                            </button>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div>
+            {% if score > 0 %}
+                X Leads by {{ score }}
+            {% elif score < 0 %}
+                O Leads by {{ score * -1 }}
+            {% else %}
+                Game is Tied!
+            {% endif %}
+        </div>
+    </div>
     </body>
     </html>
 {% endblock %}

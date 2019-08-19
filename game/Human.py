@@ -2,6 +2,9 @@ class Human:
     def __init__(self, tile=None):
         self.tile = tile
 
+    def __repr__(self):
+        return "<Human - tile: {}>".format(self.tile)
+
     def get_move(self, board, tile=None):
         if tile is None:
             tile = self.tile

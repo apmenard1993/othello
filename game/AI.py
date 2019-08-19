@@ -11,6 +11,9 @@ class AI(Computer):
         Computer.__init__(self, tile, quick)
         self.depth = depth
 
+    def __repr__(self):
+        return "<AI - tile: {} - quick: {} - depth: {}>".format(self.tile, self.quick, self.depth)
+
     def get_move(self, board, tile=None):
         if tile is None:
             tile = self.tile

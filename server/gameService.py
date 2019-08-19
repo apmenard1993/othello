@@ -7,6 +7,7 @@ from game.Human import Human
 from game.Random import Random
 from server.models.Game import Game
 
+# todo: fix this - right now if both players are the same type things are weird with the tile
 player_types = {
     "Human": Human(),
     "Computer (Random)": Random(),
@@ -15,9 +16,9 @@ player_types = {
 
 
 def update(game, move_request=None):
-    active_turn = game.active_player
+    active_turn = int(game.active_player)
     active_player_type = game.player_one_type if active_turn == 0 else game.player_two_type
-    next_turn = not active_turn
+    next_turn = int(not active_turn)
     next_player_type = game.player_one_type if next_turn == 0 else game.player_two_type
 
     active_player = player_types[active_player_type]
@@ -29,6 +30,8 @@ def update(game, move_request=None):
     active_valid_moves = board.get_valid_moves(active_player.tile)
     next_valid_moves = board.get_valid_moves(next_player.tile)
 
+    print(active_turn, active_player_type, active_player, get_tile_for_player_turn(active_turn))
+    print(next_turn, next_player_type, next_player, get_tile_for_player_turn(next_turn))
     if not active_valid_moves and not next_valid_moves:
         return 'GAME OVER'
     if active_valid_moves:
