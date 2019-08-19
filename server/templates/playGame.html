@@ -8,6 +8,7 @@
 {% block content %}
     {{ super() }}
     <body>
+    <span>Player {{ activePlayer }}'s turn</span>
     <table height="800" width="800">
         <tbody>
         {% for i in range(0,8) %}
@@ -32,7 +33,7 @@
     <script>
         function on_click(i, j) {
             $.post(
-                '/submitMove',
+                window.location + '/submitMove',
                 {i, j}
             ).done(() => {
                 window.location.reload()

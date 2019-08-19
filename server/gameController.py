@@ -1,23 +1,10 @@
 from flask import Blueprint, render_template, request
 
 import server.gameService as gameService
-from game.AI import AI
-from game.Board import Board, reset_board
-from game.Human import Human
-from game.Random import Random
 
 # set up blueprint for endpoints
-game_controller = Blueprint('game_controller', __name__, template_folder='templates')
 
-# globals
-board = Board()
-reset_board(board.boardArray)
-players = []
-player_types = {
-    "Human": Human,
-    "Computer (Random)": Random,
-    "Computer (AI)": AI,
-}
+game_controller = Blueprint('game_controller', __name__, template_folder='templates')
 
 
 # endpoints
@@ -29,19 +16,25 @@ def start_game():
     return str(game_id)
 
 
-@game_controller.route('/playGame')
-def render_game():
-    game_id = request.args['id']
-    game_board = gameService.get_game_by_id(game_id)
-    return render_template('playGame.html', gameArray=game_board)
+@game_controller.route('/playGame/<game_id>')
+def render_game(game_id):
+    game = gameService.get_game_by_id(int(game_id))
+    current_turn = game.active_player
+    game_board = game.unpickle_board()
+    if not game_board:
+        raise FileNotFoundError("Unable to find game with id {}".format(game_id))
+    return render_template('playGame.html',
+                           gameArray=game_board,
+                           activePlayer="{} ({})".format(current_turn + 1, 'X' if current_turn == 0 else 'O'))
 
 
-@game_controller.route('/submitMove', methods=['POST'])
-def submit_move():
-    # todo: get the game UUID from the request
-    # fetch the game state from the database
-    # update the game state and return control to the user
-    global board
+@game_controller.route('/playGame/<game_id>/submitMove', methods=['POST'])
+def submit_move(game_id):
     move_request = (request.form['i'], request.form['j'])
-    board = gameService.update(move_request, board)
-    return 'blah'
+    game = gameService.get_game_by_id(int(game_id))
+    if not game:
+        raise FileNotFoundError("Unable to find game with id {}".format(game_id))
+    update_response = gameService.update(game, move_request)
+    if update_response == 'GAME OVER':
+        return 'false'
+    return 'true'

@@ -28,11 +28,11 @@ def on_board(x, y):
 
 class Board:
     def __init__(self, board_array=None):
-        self.boardArray = board_array if board_array is not None else get_new_board()
+        self.board_array = board_array if board_array is not None else get_new_board()
 
     def get_score(self):
         score = 0
-        for row in self.boardArray:
+        for row in self.board_array:
             for item in row:
                 if item == 'X':
                     score += 1
@@ -44,7 +44,7 @@ class Board:
         board_copy = self.copy_board()
         board_copy = Board(board_copy)
         for x, y in board_copy.get_valid_moves(tile):
-            board_copy.boardArray[x][y] = '.'
+            board_copy.board_array[x][y] = '.'
         return board_copy
 
     def draw_board(self):
@@ -53,19 +53,19 @@ class Board:
         for y in range(8):
             print("%d" % (y + 1), end=' ')
             for x in range(8):
-                print('| %s' % self.boardArray[x][y]),
+                print('| %s' % self.board_array[x][y]),
             print('|')
             print(h_line)
         print('    1   2   3   4   5   6   7   8')
 
     def copy_board(self):
-        return copy.deepcopy(self.boardArray)
+        return copy.deepcopy(self.board_array)
 
     def check_valid_move_with_flips(self, tile, x_start, y_start):
         """Checks from a starting position every possible space near it with an enemy tile
            and returns a list of tiles to be flipped along all lines of enemy tiles, if any."""
         board = self.copy_board()
-        if self.boardArray[x_start][y_start] != " " or not on_board(x_start, y_start):
+        if self.board_array[x_start][y_start] != " " or not on_board(x_start, y_start):
             return False
         board[x_start][y_start] = tile
 
@@ -122,7 +122,7 @@ class Board:
         if not flip_tiles:
             return False
 
-        copy_board.boardArray[x_start][y_start] = tile
+        copy_board.board_array[x_start][y_start] = tile
         for x, y in flip_tiles:
-            copy_board.boardArray[x][y] = tile
+            copy_board.board_array[x][y] = tile
         return copy_board

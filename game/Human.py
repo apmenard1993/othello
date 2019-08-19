@@ -1,11 +1,13 @@
 class Human:
-    def __init__(self, tile):
+    def __init__(self, tile=None):
         self.tile = tile
 
-    def get_move(self, board):
+    def get_move(self, board, tile=None):
+        if tile is None:
+            tile = self.tile
         one_through_eight = '1 2 3 4 5 6 7 8'.split()
         possible_moves = []
-        for x, y in board.get_valid_moves(self.tile):
+        for x, y in board.get_valid_moves(tile):
             possible_moves.append((x, y))
 
         if not possible_moves:
@@ -25,7 +27,7 @@ class Human:
                 x = int(move_x) - 1
                 y = int(move_y) - 1
 
-                if not board.check_valid_move_with_flips(self.tile, x, y):
+                if not board.check_valid_move_with_flips(tile, x, y):
                     print("You can't move there, try again")
                     continue
                 else:

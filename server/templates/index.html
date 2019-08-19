@@ -20,13 +20,8 @@
             <!--
                 select player 1
             -->
-            <div class="form-group">
-                <label for="playerOneType">Select Player 1 Type:</label>
-                <select class="form-control" id="playerOneType">
-                    <option>Human</option>
-                    <option>Computer (Random)</option>
-                    <option>Computer (AI)</option>
-                </select>
+            <div class="center-block">
+                <b>Player 1 is Human.</b>
             </div>
             <!--
                 select player 2
@@ -52,18 +47,15 @@
     {{ super() }}
     <script>
         function on_click() {
-            const playerOneType = $("#playerOneType");
-            console.log(playerOneType);
             const playerTwoType = $("#playerTwoType");
-            console.log(playerTwoType);
             $.post(
                 '/startGame',
                 {
-                    "playerOneType": playerOneType[0].value,
+                    "playerOneType": 'Human',
                     "playerTwoType": playerTwoType[0].value
                 }
             ).done(function (id) {
-                window.location = `/playGame?id=${id}`;
+                window.location = `/playGame/${id}`;
             }).fail(function (e) {
                 console.error(e);
             });

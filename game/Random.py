@@ -5,11 +5,13 @@ from game.Computer import Computer
 
 class Random(Computer):
 
-    def get_move(self, board):
+    def get_move(self, board, tile=None):
+        if tile is None:
+            tile = self.tile
         if not self.quick:
             print("Press enter to see the computer's move")
             input()
-        possible_moves = board.get_valid_moves(self.tile)
+        possible_moves = board.get_valid_moves(tile)
         if not possible_moves:
             return None
         chosen_move = random.choice(possible_moves)

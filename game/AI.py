@@ -7,15 +7,17 @@ MOVE_WEIGHT = 100
 
 
 class AI(Computer):
-    def __init__(self, tile, quick=True, depth=4):
+    def __init__(self, tile=None, quick=True, depth=4):
         Computer.__init__(self, tile, quick)
         self.depth = depth
 
-    def get_move(self, board):
+    def get_move(self, board, tile=None):
+        if tile is None:
+            tile = self.tile
         if not self.quick:
             print("Press enter to see the computer's move")
             input()
-        return self.get_best_move(board, self.tile, self.depth)
+        return self.get_best_move(board, tile, self.depth)
 
     def get_best_move(self, board, tile, depth):
         best_move = None
@@ -39,7 +41,7 @@ class AI(Computer):
 
     def alpha_beta(self, board, alpha, beta, depth, player):
         if depth == 0:
-            return board.evaluate_state(player)
+            return self.evaluate_state(board, player)
 
         possible_moves = board.get_valid_moves(player)
         for x, y in possible_moves:
@@ -54,8 +56,9 @@ class AI(Computer):
 
         return alpha
 
-    def evaluate_state(self, board):
-        other_tile = get_other_player(self.tile)
+    @staticmethod
+    def evaluate_state(board, player):
+        other_tile = get_other_player(player)
 
         # check corners, total number of tiles, number of available moves
         value = 0
@@ -64,9 +67,9 @@ class AI(Computer):
         my_corners = 0
         opp_corners = 0
         for x, y in [[0, 0], [0, 7], [7, 0], [7, 7]]:
-            if board.boardArray[x][y] == self.tile:
+            if board.board_array[x][y] == player:
                 my_corners += 1
-            elif board.boardArray[x][y] == other_tile:
+            elif board.board_array[x][y] == other_tile:
                 opp_corners += 1
 
         corners = (CORNER_WEIGHT * (my_corners - opp_corners))
@@ -74,16 +77,16 @@ class AI(Computer):
         # check total number of tiles
         my_total = 0
         opp_total = 0
-        for row in board.boardArray:
+        for row in board.board_array:
             for space in row:
-                if space == self.tile:
+                if space == player:
                     my_total += 1
                 elif space == other_tile:
                     opp_total += 1
         tiles = (TILE_WEIGHT * (my_total - opp_total))
 
         # check number of available next moves
-        my_moves = len(board.get_valid_moves(self.tile))
+        my_moves = len(board.get_valid_moves(player))
         opp_moves = len(board.get_valid_moves(other_tile))
 
         moves = (MOVE_WEIGHT * (my_moves - opp_moves))
